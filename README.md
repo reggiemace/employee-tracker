@@ -2,7 +2,7 @@
 
 ## Description
 
-This application allows a manager to manage employees using a mysql database. A user pf this application will be able to:
+This application allows a manager to manage employees using a mysql database. A user of this application will be able to:
 
 - View and update employee mangers.
 - Update an employee based on manager
