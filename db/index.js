@@ -1,4 +1,4 @@
-const { allowedNodeEnvironmentFlags } = require("node:process");
+//const { allowedNodeEnvironmentFlags } = require("node:process");
 const connection = require("./connection");
 
 console.log("The connection file is connected");
@@ -54,3 +54,4 @@ function viewEmployeeByManager() {
 function viewBudgetByDepartment() {
 
 }
+createDepartment();
