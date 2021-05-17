@@ -1,4 +1,6 @@
 console.log("This is where you will add your prompts");
+//const start = require('./start');
+
 var inquirer = require("inquirer");
 var managerFunctions = require("./db/index");
 
