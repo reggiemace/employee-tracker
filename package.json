@@ -4,6 +4,8 @@
   "description": "## Description",
   "main": "index.js",
   "dependencies": {
+    "ascii-art": "^2.8.0",
+    "ascii-art-table": "^1.0.1",
     "inquire": "^0.4.8",
     "inquirer": "^8.0.0",
     "mysql": "^2.18.1",
@@ -11,7 +13,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node seed.sql"
   },
   "repository": {
     "type": "git",

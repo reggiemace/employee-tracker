@@ -4,7 +4,10 @@ console.log("This is where you will add your prompts");
 var inquirer = require("inquirer");
 var managerFunctions = require("./db/index");
 
+
+
 function start() {
+ 
   inquirer
     .prompt({
       name: "action",

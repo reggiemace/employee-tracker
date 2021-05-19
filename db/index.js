@@ -3,8 +3,6 @@ const util = require("util");
 const connection = require("./connection");
 var inquirer = require("inquirer");
 
-console.log("The connection file is connected");
-connection.queryPromise = util.promisify(connection.query);
 // add a department, Working
 function createDepartment() {
   var start = require("../index");
@@ -42,6 +40,7 @@ function deleteDepartment() {
           type: "list",
           choices: function () {
             let choiceArray = res.map((choice) => choice.name);
+            console.log(choiceArray);
             return choiceArray;
           },
           message: "Select a department to remove",
@@ -60,14 +59,19 @@ function deleteDepartment() {
 }
 // view roles "working"
 function viewRoles() {
+  var start = require("../index");
+
   console.log("Viewing roles.....");
   connection.query("SELECT * FROM role", (err, res) => {
     if (err) throw err;
     // Log all results of the SELECT statement
+    console.log(" ");
+
     console.table(res);
-    connection.end();
   });
+  start();
 }
+
 // add a role, NOT working
 function addNewRole() {
   var start = require("../index");
@@ -90,17 +94,15 @@ function addNewRole() {
         },
         {
           name: "department",
-          type: "input",
-          choices: function () {
-            let choiceArray = res[1].map((choice) => choice.department);
-            return choiceArray;
-          },
+          type: "list",
+          choices: getRole(),
           message: "Select a department",
         },
       ])
+
       .then((answer) => {
         connection.query(
-          `INSERT INTO roles(title, salary, department_id) VALUES ("${answer.newTitle}", "${answer.newSalary}", ${answer.department}, (SELECT id FROM departments WHERE name = "${answer.department}") );`
+          `INSERT INTO roles(title, salary, department_id) VALUES ("${answer.newTitle}", "${answer.newSalary}", ${answer.department}`
         );
       })
       .then(() => {
@@ -162,7 +164,8 @@ function addEmployee() {
       },
       {
         name: "manager_id",
-        type: "input",
+        type: "list",
+        choices: getManagers(),
         message: "Who is the manger for this employee",
       },
     ])
@@ -213,7 +216,7 @@ function viewDepartment() {
     console.log("");
     console.table(res);
   });
-  start();
+  getManagers();
 }
 
 // update employee roles, working
@@ -263,22 +266,56 @@ function upDateEmployeeByManager() {
 // view employees by manager
 function viewEmployeeByManager() {
   var start = require("../index");
-  connection.query (`SELECT * FROM employee`, (err, res) => {
+  connection.query(`SELECT * FROM employee`, (err, res) => {
     if (err) throw err;
+    console.table(res());
     inquirer.prompt([
       {
-
-      }, 
-
-    ])
-  })
-
-  console.log("Viewing budget for ....");
+        name: "viewManger",
+        type: "list",
+        choice: [],
+      },
+    ]).then;
+  });
 }
 // view budget by getting total salaries in a department
 
 function viewBudgetByDepartment() {
   var start = require("../index");
+  console.log("Viewing budget for ....");
+}
+var managersArray = [];
+
+function getManagers() {
+  connection.query(
+    `SELECT  employee.last_name, employee.first_name  FROM employee WHERE manager_id = 0`,
+    (err, res) => {
+      if (err) throw err;
+      for (var i = 0; i < res.length; i++) {
+        var employString = res[i].first_name + " " + res[i].last_name;
+        managersArray.push(employString);
+
+        // [
+        // //   `${managersArray.push(res[i].first_name)},
+        // // ${managersArray.push(res[i].last_name)}`,
+        // ];
+      }
+    }
+  );
+  console.log(managersArray);
+  return managersArray;
+}
+var roleArray = [];
+function getRole() {
+  
+  connection.query(`SELECT * FROM role`, (err, res) => {
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      roleArray.push(res[i].title);
+    }
+  });
+  return roleArray;
+  // console.log(roleArray);
 }
 
 module.exports = {
