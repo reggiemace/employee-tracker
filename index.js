@@ -4,10 +4,7 @@ console.log("This is where you will add your prompts");
 var inquirer = require("inquirer");
 var managerFunctions = require("./db/index");
 
-
-
 function start() {
- 
   inquirer
     .prompt({
       name: "action",
@@ -15,6 +12,7 @@ function start() {
       message: "What would you like to do",
       choices: [
         "View all departments",
+        "View all Employees",
         "Add a department",
         "Delete a department",
         "View all roles",
@@ -37,8 +35,7 @@ function start() {
         managerFunctions.deleteDepartment();
       } else if (answer.action === "View all roles") {
         managerFunctions.viewRoles();
-      }
-      if (answer.action === "Add a role") {
+      } else if (answer.action === "Add a role") {
         managerFunctions.addNewRole();
       } else if (answer.action === "Delete a role") {
         managerFunctions.deleteRole();
@@ -52,6 +49,8 @@ function start() {
         managerFunctions.upDateEmployeeByManager();
       } else if (answer.action === "View budget by department") {
         managerFunctions.viewBudgetByDepartment();
+      } else if (answer.action === "View all Employees") {
+        managerFunctions.getEmployee();
       }
     });
 }

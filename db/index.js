@@ -2,6 +2,8 @@
 const util = require("util");
 const connection = require("./connection");
 var inquirer = require("inquirer");
+const { connect } = require("./connection");
+const start = require("../index");
 
 // add a department, Working
 function createDepartment() {
@@ -60,23 +62,21 @@ function deleteDepartment() {
 // view roles "working"
 function viewRoles() {
   var start = require("../index");
-
   console.log("Viewing roles.....");
   connection.query("SELECT * FROM role", (err, res) => {
     if (err) throw err;
-    // Log all results of the SELECT statement
-    console.log(" ");
 
+    console.log(" ");
     console.table(res);
+    start();
   });
-  start();
 }
 
-// add a role, NOT working
+// add a role, working
 function addNewRole() {
   var start = require("../index");
 
-  console.log("Adding a new role.....");
+  console.log("Viewing current roles.....");
   connection.query("SELECT * FROM role", (err, res) => {
     if (err) throw err;
     console.table(res);
@@ -102,10 +102,11 @@ function addNewRole() {
 
       .then((answer) => {
         connection.query(
-          `INSERT INTO roles(title, salary, department_id) VALUES ("${answer.newTitle}", "${answer.newSalary}", ${answer.department}`
+          `INSERT INTO role(title, salary, department_id) VALUES ("${answer.newTitle}", ${answer.newSalary}, ${answer.department})`
         );
       })
       .then(() => {
+        console.log("role added...");
         start();
         // })
       });
@@ -159,14 +160,17 @@ function addEmployee() {
       },
       {
         name: "role_id",
-        type: "input",
-        message: "What is the employee's role_id",
+        type: "list",
+        choices: getRole(),
+        message:
+          "What is the employee's role_id \n You may have to scroll up or down to view available selections",
       },
       {
         name: "manager_id",
         type: "list",
         choices: getManagers(),
-        message: "Who is the manger for this employee",
+        message:
+          "What is the Manger ID for this employee? \n You may have to scroll up or down to view available selections",
       },
     ])
     .then(function (answers) {
@@ -182,7 +186,7 @@ function addEmployee() {
 // delete employee, can be deleted by single parameter only
 function deleteEmployee() {
   var start = require("../index");
-
+  getEmployee();
   console.log("Deleting employee.....");
   connection.query("SELECT * FROM employee", (err, res) => {
     if (err) throw err;
@@ -190,15 +194,14 @@ function deleteEmployee() {
       .prompt([
         {
           name: "deleteEmployee",
-          type: "list",
-          message: "Select an employee to remove",
+          type: "input",
+          message: "Select the employee by id to remove",
         },
       ])
       .then(function (answers) {
-        connection.query(`DELETE FROM employee WHERE ?`, {
-          id: answers.deleteEmployee,
-          //first_name: answers.deleteEmployee,
-        });
+        connection.query(
+          `DELETE FROM employee WHERE id  = ${answers.deleteEmployee}`
+        );
       })
       .then(() => {
         start();
@@ -215,8 +218,8 @@ function viewDepartment() {
     // Log all results of the SELECT statement
     console.log("");
     console.table(res);
+    start();
   });
-  getManagers();
 }
 
 // update employee roles, working
@@ -288,18 +291,16 @@ var managersArray = [];
 
 function getManagers() {
   connection.query(
-    `SELECT  employee.last_name, employee.first_name  FROM employee WHERE manager_id = 0`,
+    `SELECT  employee.last_name, employee.first_name, manager_id  FROM employee WHERE (manager_id = 100 OR manager_id = 300 or manager_id = 500) `,
     (err, res) => {
       if (err) throw err;
-      for (var i = 0; i < res.length; i++) {
-        var employString = res[i].first_name + " " + res[i].last_name;
-        managersArray.push(employString);
 
-        // [
-        // //   `${managersArray.push(res[i].first_name)},
-        // // ${managersArray.push(res[i].last_name)}`,
-        // ];
+      for (var i = 0; i < res.length; i++) {
+        var employString = res[i].manager_id;
+        managersArray.push(employString);
       }
+      console.log("");
+      console.table(res);
     }
   );
   console.log(managersArray);
@@ -307,15 +308,33 @@ function getManagers() {
 }
 var roleArray = [];
 function getRole() {
-  
   connection.query(`SELECT * FROM role`, (err, res) => {
     if (err) throw err;
+
     for (var i = 0; i < res.length; i++) {
-      roleArray.push(res[i].title);
+      roleArray.push(res[i].department_id);
     }
+    console.log(roleArray);
+    console.table(res);
   });
+
   return roleArray;
+
   // console.log(roleArray);
+}
+var employeeArray = [];
+function getEmployee() {
+  var start = require("../index");
+  connection.query(`SELECT * FROM employee`, (err, res) => {
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      employeeArray.push(res[i].id);
+    }
+    console.log(employeeArray);
+    console.table(res);
+  });
+  start();
+  return employeeArray;
 }
 
 module.exports = {
@@ -331,4 +350,5 @@ module.exports = {
   upDateEmployeeByManager,
   viewEmployeeByManager,
   viewBudgetByDepartment,
+  getEmployee,
 };
