@@ -10,10 +10,13 @@ This application allows a manager to manage employees using a mysql database. A 
 - View the total utilized budget of any department
 
 ## Usage
-
+You can view a walk-through presentation of this application by clicking [here](https://youtu.be/COPtaYX-Lzc).
+![command-line-image](./assets/images/cli.png)
 ## License
 
 This application is license through MIT. You can find more out more about the license at : [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT).
+
+
 
 ## Installation
 

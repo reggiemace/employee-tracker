@@ -313,7 +313,7 @@ function getRole() {
     for (var i = 0; i < res.length; i++) {
       roleArray.push(res[i].department_id);
     }
-    //console.log(roleArray);
+    console.log(" ");
     console.table(res);
   });
 
