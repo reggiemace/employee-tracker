@@ -11,19 +11,19 @@ function start() {
       type: "list",
       message: "What would you like to do",
       choices: [
-        "View all departments",
-        "View all Employees",
         "Add a department",
-        "Delete a department",
-        "View all roles",
-        "Add a role",
-        "Delete a role",
         "Add an employee",
+        "Add a role",
+        "Delete a department",
+        "Delete a role",
         "Delete an employee",
-        "Update employee role",
-        "Update employee manager",
+        "View all departments",
+        "View all employees",
         "View employee by manager",
         "View budget by department",
+        "View all roles",
+        "Update employee role",
+        "Update employee manager",
       ],
     })
     .then(function (answer) {
@@ -49,7 +49,7 @@ function start() {
         managerFunctions.upDateEmployeeByManager();
       } else if (answer.action === "View budget by department") {
         managerFunctions.viewBudgetByDepartment();
-      } else if (answer.action === "View all Employees") {
+      } else if (answer.action === "View all employees") {
         managerFunctions.getEmployee();
       }
     });

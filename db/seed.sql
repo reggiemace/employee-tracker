@@ -11,15 +11,15 @@ VALUES
 ('Software Test Analyst', 75000, 3),
 ('Test Engineer', 139000,  3),
 ('Contracts Lead', 85000, 3),
-('Contracts Specialist', 79000, 3)
+('Contracts Specialist', 79000, 3);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
-('John', 'Brown', 10, ), 
-('Lisa', 'Raye', 11, 1), 
-('Amanda', 'Avant', 20, ), 
-('Billy', 'Blankenship', 21, 2), 
-('Cristy', 'Carol', 30, ),
-('Danny', 'Devito', 31, 30);
+('John', 'Brown', 1, 100), 
+('Lisa', 'Raye', 2, 1), 
+('Amanda', 'Avant', 3, 300), 
+('Billy', 'Blankenship', 4, 3), 
+('Cristy', 'Carol', 5, 500),
+('Danny', 'Devito', 6, 5);
 
 SELECT * FROM employee;

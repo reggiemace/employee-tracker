@@ -2,8 +2,6 @@
 const util = require("util");
 const connection = require("./connection");
 var inquirer = require("inquirer");
-const { connect } = require("./connection");
-const start = require("../index");
 
 // add a department, Working
 function createDepartment() {
@@ -144,6 +142,7 @@ function deleteRole() {
 }
 // add employee, working
 function addEmployee() {
+  getRole();
   var start = require("../index");
   console.log("Adding a new employee role.....");
   inquirer
@@ -160,10 +159,10 @@ function addEmployee() {
       },
       {
         name: "role_id",
-        type: "list",
-        choices: getRole(),
+        type: "input",
+        // choices: getRole(),
         message:
-          "What is the employee's role_id \n You may have to scroll up or down to view available selections",
+          "Select the id that corresponds to the role of the new employee",
       },
       {
         name: "manager_id",
@@ -200,7 +199,7 @@ function deleteEmployee() {
       ])
       .then(function (answers) {
         connection.query(
-          `DELETE FROM employee WHERE id  = ${answers.deleteEmployee}`
+          `DELETE FROM employee WHERE employee_id  = ${answers.deleteEmployee}`
         );
       })
       .then(() => {
@@ -314,7 +313,7 @@ function getRole() {
     for (var i = 0; i < res.length; i++) {
       roleArray.push(res[i].department_id);
     }
-    console.log(roleArray);
+    //console.log(roleArray);
     console.table(res);
   });
 
@@ -330,9 +329,10 @@ function getEmployee() {
     for (var i = 0; i < res.length; i++) {
       employeeArray.push(res[i].id);
     }
-    console.log(employeeArray);
+    console.log(" ");
     console.table(res);
   });
+
   start();
   return employeeArray;
 }
